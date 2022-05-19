@@ -13,6 +13,7 @@
         <FILE id="KrXhgn" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       </GROUP>
       <GROUP id="{74743833-10FD-2227-8FB0-299F98D132EE}" name="DSP">
+        <FILE id="EiNme2" name="BucketBrigade.h" compile="0" resource="0" file="Source/BucketBrigade.h"/>
         <FILE id="q49dAr" name="Delays.h" compile="0" resource="0" file="Source/Delays.h"/>
         <FILE id="LXkViI" name="DryWet.h" compile="0" resource="0" file="Source/DryWet.h"/>
         <FILE id="NTGhsZ" name="Oscillators.h" compile="0" resource="0" file="Source/Oscillators.h"/>
