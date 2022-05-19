@@ -206,7 +206,6 @@ public:
 		for (int i = 0; i < JucePlugin_MaxNumInputChannels; ++i) 
 		{
 			lowPassFilters[i] = new LowPass();
-			lowPassFilters[i]->preapareToPlay(sampleRate, BIQUAD_CUTOFF_FREQ, BIQUAD_Q);
 		}
 		
 		DelayBase::prepareToPlay(sampleRate, maxNumSamples);

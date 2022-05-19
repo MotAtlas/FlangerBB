@@ -34,6 +34,7 @@ public:
     LowPass() {};
     ~LowPass();
     
+    /*
     void preapareToPlay(float sampleRate, float cutoffFrequency, float Q) { 
         sr = sampleRate;
         setBiquad(cutoffFrequency, Q);
@@ -49,13 +50,6 @@ public:
         Fc = cutFrequency / sr;
         calcBiquad();
     }
-    
-    float getNextAudioSample(float in) { 
-        double out = in * a0 + z1;
-        z1 = in * a1 + z2 - b1 * out;
-        z2 = in * a2 - b2 * out;
-        return out;
-    }
 
     void calcBiquad() {
         double norm;
@@ -67,18 +61,30 @@ public:
         b1 = 2 * (K * K - 1) * norm;
         b2 = (1 - K / Q + K * K) * norm;
     }
+    */
+
+    float getNextAudioSample(float in) {
+        double out = in * a0 + z1;
+        z1 = in * a1 + z2 - b1 * out;
+        z2 = in * a2 - b2 * out;
+        return out;
+    }
 
 protected: 
-    float sr = 44000;
+    float a0 = 0.10810997327482257;
+    float a1 = 0.21621994654964513;
+    float a2 = 0.10810997327482257;
+    float b1 = -1.3457492407577045;
+    float b2 = 0.7781891338569948;
 
-    float a0 = 1.0f;
-    float a1 = 0.0f;
-    float a2 = 0.0f;
-    float b1 = 0.0f;
-    float b2 = 0.0f;
+    /*
+    float sr = 44100;
     float Fc = 0.50f;
-    float Q = 0.707f;
+    float Q = 2.62f;
     float peakGain = 0.0f;
+    */
+
     float z1 = 0.0f;
     float z2 = 0.0f;
+
 };
