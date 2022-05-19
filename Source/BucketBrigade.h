@@ -11,6 +11,20 @@ public:
     ~Distorsion() {};
     float static getNextAudioSample(float sample) { 
         return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * sample);
+        /*
+        * Implementazione del paper semplice
+        auto a = 1 / 8;
+        auto b = 1 / 18;
+        if (sample > 1) {
+            return 1 - a - b;
+        }
+        else if (sample < 1 && sample > -1) {
+            return sample - a * pow(sample, 2) - b * pow(sample, 3) + a;
+        }
+        else {
+            return -1 - a + b;
+        }
+        */
     } 
 }; 
  
