@@ -2,29 +2,23 @@
 #include<JuceHeader.h> 
  
 #include <math.h> 
+
+#include "Parameters.h"
  
 class Distorsion { 
 public: 
- Distorsion() {}; 
- ~Distorsion() {}; 
- 
- void static getNextAudioBlock(AudioBuffer<float>& buffer, const int numSamples) { 
-  const int numCh = buffer.getNumChannels(); 
-  auto bufferData = buffer.getArrayOfWritePointers(); 
- 
-  for (int smp = 0; smp < numSamples; ++smp) { 
-   for (auto ch = 0; ch < numCh; ++ch) { 
-    bufferData[ch][smp] = computeSample(bufferData[ch][smp]); 
-   } 
-  } 
- } 
- 
- float static computeSample(float x) { 
-  if (x > 0) 
-   return 1 - exp(-x); 
-  else 
-   return -1 + exp(x); 
- } 
+    Distorsion() {}; 
+    ~Distorsion() {};
+    float static getNextAudioSample(float sample) { 
+        return computeSample(sample);
+    } 
+    float static computeSample(float x) { 
+     /*if (x > 0) 
+     return 1 - exp(-x); 
+     else 
+     return -1 + exp(x); */
+        return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * x);
+    } 
 }; 
  
  

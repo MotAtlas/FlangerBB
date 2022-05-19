@@ -11,6 +11,8 @@
 #define GLIDE_TIME 0.01
 #define SMOOTHING_TIME 0.04
 
+#define DISTORTION_ALPHA 1.2f
+
 // Actual parameters
 #define NAME_DW "dw"
 #define NAME_DT "dt"

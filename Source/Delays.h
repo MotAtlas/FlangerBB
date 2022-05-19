@@ -1,6 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "Parameters.h"
+#include "BucketBrigade.h"
 
 class DelayBase
 {
@@ -169,6 +170,7 @@ private:
 
 					// ALLPASS FILTER
 					auto sampleValue = alpha * (delayData[ch][B] - oldSample[ch]) + delayData[ch][A];
+					sampleValue = Distorsion::getNextAudioSample(sampleValue);
 					oldSample[ch] = sampleValue;
 
 				// Scrivo sul buffer di output
