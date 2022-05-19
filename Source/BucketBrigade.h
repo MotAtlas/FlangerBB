@@ -34,15 +34,14 @@ public:
     LowPass() {};
     ~LowPass();
     
-    void preapareToPlay(float sampleRate, float cutoffFrequency, float Q, float peakGainDB) { 
+    void preapareToPlay(float sampleRate, float cutoffFrequency, float Q) { 
         sr = sampleRate;
-        setBiquad(cutoffFrequency, Q, peakGainDB);
+        setBiquad(cutoffFrequency, Q);
     }
     
-    void setBiquad(float cutoffFrequency, float Q, float peakGainDB) {
+    void setBiquad(float cutoffFrequency, float Q) {
         this->Q = Q;
         this->Fc = cutoffFrequency;
-        this->peakGain = peakGainDB;
         calcBiquad();
     }
 
@@ -60,7 +59,6 @@ public:
 
     void calcBiquad() {
         double norm;
-        double V = pow(10, fabs(peakGain) / 20.0);
         double K = tan(MathConstants<float>::pi * Fc);
         norm = 1 / (1 + K / Q + K * K);
         a0 = K * K * norm;

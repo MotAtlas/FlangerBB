@@ -12,9 +12,8 @@
 #define SMOOTHING_TIME 0.04
 
 #define DISTORTION_ALPHA 1.45f
-#define BIQUAD_CUTOFF_FREQ 200.0f
+#define BIQUAD_CUTOFF_FREQ 5000.0f
 #define BIQUAD_Q 5.0f
-#define BIQUAD_PEAK_GAIN_DB 0.0f
 
 // Actual parameters
 #define NAME_DW "dw"
