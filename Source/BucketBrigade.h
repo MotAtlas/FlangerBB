@@ -10,14 +10,7 @@ public:
     Distorsion() {}; 
     ~Distorsion() {};
     float static getNextAudioSample(float sample) { 
-        return computeSample(sample);
-    } 
-    float static computeSample(float x) { 
-     /*if (x > 0) 
-     return 1 - exp(-x); 
-     else 
-     return -1 + exp(x); */
-        return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * x);
+        return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * sample);
     } 
 }; 
  
