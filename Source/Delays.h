@@ -9,7 +9,7 @@ public:
 	DelayBase() {};
 	~DelayBase() {};
 
-	void prepareToPlay(double sampleRate, int maxNumSamples)
+	virtual void prepareToPlay(double sampleRate, int maxNumSamples)
 	{
 		sr = sampleRate;
 		memorySize = roundToInt(MAX_DELAY_TIME * sampleRate) + maxNumSamples;
@@ -201,6 +201,17 @@ public:
 	ModDelay() {}
 	~ModDelay() {}
 
+	void prepareToPlay(double sampleRate, int maxNumSamples) override 
+	{
+		for (int i = 0; i < JucePlugin_MaxNumInputChannels; ++i) 
+		{
+			lowPassFilters[i] = new LowPass();
+			lowPassFilters[i]->preapareToPlay(sampleRate, BIQUAD_CUTOFF_FREQ, BIQUAD_Q, BIQUAD_PEAK_GAIN_DB);
+		}
+		
+		DelayBase::prepareToPlay(sampleRate, maxNumSamples);
+	}
+
 	void setFeedback(float newValue)
 	{
 		feedback.setTargetValue(newValue);
@@ -262,6 +273,7 @@ private:
 					// ALLPASS FILTER
 				auto sampleValue = alpha * (delayData[ch][B] - oldSample[ch]) + delayData[ch][A];
 				sampleValue = Distorsion::getNextAudioSample(sampleValue);
+				sampleValue = lowPassFilters[ch]->getNextAudioSample(sampleValue);
 				oldSample[ch] = sampleValue;
 
 				// Scrivo sul buffer di output
@@ -277,6 +289,8 @@ private:
 	{
 		feedback.reset(sr, FBK_SMOOTHING);
 	}
+
+	LowPass* lowPassFilters[2];
 
 	float oldSample[2] = { 0.0f, 0.0f };
 

@@ -29,34 +29,58 @@ public:
 }; 
  
  
-class OnePole { 
+class LowPass { 
 public: 
- OnePole() { a0 = 1.0; b1 = 0.0; z1 = 0.0; }; 
- OnePole(double Fc) { z1 = 0.0; setFc(Fc); }; 
- ~OnePole(); 
- 
- void getNextAudioBlock(AudioBuffer<float>& buffer, const int numSamples, int ch) { 
-  a0 = 1.0; b1 = 0.0; z1 = 0.0; 
-  setFc(2000); 
- 
- 
-  const int numCh = buffer.getNumChannels(); 
-  auto bufferData = buffer.getArrayOfWritePointers(); 
- 
-   for (int smp = 0; smp < numSamples; ++smp) { 
-    bufferData[ch][smp] = process(bufferData[ch][smp]); 
-   } 
- } 
- 
- void setFc(double Fc) { 
-  b1 = exp(-2.0 * MathConstants<float>::pi * Fc); 
-  a0 = 1.0 - b1; 
- } 
- float process(float in) { 
-  return z1 = in * a0 + z1 * b1; 
- } 
- 
- 
+    LowPass() {};
+    ~LowPass();
+    
+    void preapareToPlay(float sampleRate, float cutoffFrequency, float Q, float peakGainDB) { 
+        sr = sampleRate;
+        setBiquad(cutoffFrequency, Q, peakGainDB);
+    }
+    
+    void setBiquad(float cutoffFrequency, float Q, float peakGainDB) {
+        this->Q = Q;
+        this->Fc = cutoffFrequency;
+        this->peakGain = peakGainDB;
+        calcBiquad();
+    }
+
+    void setFc(double cutFrequency) {
+        Fc = cutFrequency / sr;
+        calcBiquad();
+    }
+    
+    float getNextAudioSample(float in) { 
+        double out = in * a0 + z1;
+        z1 = in * a1 + z2 - b1 * out;
+        z2 = in * a2 - b2 * out;
+        return out;
+    }
+
+    void calcBiquad() {
+        double norm;
+        double V = pow(10, fabs(peakGain) / 20.0);
+        double K = tan(MathConstants<float>::pi * Fc);
+        norm = 1 / (1 + K / Q + K * K);
+        a0 = K * K * norm;
+        a1 = 2 * a0;
+        a2 = a0;
+        b1 = 2 * (K * K - 1) * norm;
+        b2 = (1 - K / Q + K * K) * norm;
+    }
+
 protected: 
- double a0, b1, z1; 
+    float sr = 44000;
+
+    float a0 = 1.0f;
+    float a1 = 0.0f;
+    float a2 = 0.0f;
+    float b1 = 0.0f;
+    float b2 = 0.0f;
+    float Fc = 0.50f;
+    float Q = 0.707f;
+    float peakGain = 0.0f;
+    float z1 = 0.0f;
+    float z2 = 0.0f;
 };
