@@ -13,6 +13,9 @@ public:
 		samplePeriod = 1.0 / sr;
 		frequency.reset(sr, GLIDE_TIME);
 		phaseDelta.reset(sr, PH_SMOOTHING);
+
+		for (int ch = 0; ch < JucePlugin_MaxNumInputChannels; ch++)
+			currentPhase[ch] = 0.0f;
 	}
 
 	void setFrequency(float newValue)
@@ -44,8 +47,6 @@ public:
 				channelPhaseOffset[ch] = delta;
 			}
 		}
-		//channelPhaseOffset[0] = delta;
-		//channelPhaseOffset[1] = 0.0f;
 	}
 
 	void getNextAudioBlock(AudioBuffer<float>& buffer, const int numSamples)
@@ -104,8 +105,8 @@ private:
 	int waveform = 0; // Un enum sarebbe stato meglio, ma per ora teniamo le cose semplici
 
 	double samplePeriod = 1.0;
-	float currentPhase[JucePlugin_MaxNumInputChannels] = {0.0f, 0.0f};
-	float channelPhaseOffset[JucePlugin_MaxNumInputChannels] = { 0.0f, 0.0f };
+	float currentPhase[JucePlugin_MaxNumInputChannels];
+	float channelPhaseOffset[JucePlugin_MaxNumInputChannels];
 	float phaseIncrement = 0.0f;
 	SmoothedValue<float, ValueSmoothingTypes::Linear> phaseDelta;
 	SmoothedValue<float, ValueSmoothingTypes::Multiplicative> frequency;
