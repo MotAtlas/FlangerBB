@@ -6,7 +6,6 @@
 #define TIME_SMOOTHING 0.02f
 #define FBK_SMOOTHING  0.02f
 #define PH_SMOOTHING 0.02f
-#define FREQ_LFO2_SMOOTHING 0.2f
 
 #define LEVEL_SMOOTHING_TIME 0.02f
 

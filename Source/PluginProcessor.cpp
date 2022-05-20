@@ -20,8 +20,8 @@ DelayFXAudioProcessor::DelayFXAudioProcessor()
     drywetter.setDryWetRatio(DEFAULT_DW);
     LFO.setFrequency(DEFAULT_FREQ);
     LFO.setWaveform(DEFAULT_WF);
-    LFO2.setWaveform(DEFAULT_WF);
     LFO2.setFrequency(DEFAULT_FREQ_LFO2);
+    LFO2.setWaveform(DEFAULT_WF);
     timeAdapter.setModAmount(DEFAULT_MOD);
     timeAdapter.setParameter(DEFAULT_DT);
 }
@@ -59,11 +59,26 @@ void DelayFXAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     LFO.getNextAudioBlock(modulationSignal, numSamples);
     LFO2.getNextAudioBlock(modulationSignal2, numSamples);
     
-
     if (lfo2On) {
-        modulationSignal.addFrom(0, 0, modulationSignal2, 0, numSamples, 1);
-        modulationSignal.addFrom(1, 0, modulationSignal2, 1, numSamples, 1);
+        auto bufferData = modulationSignal.getArrayOfWritePointers();
+        auto mod = modulationSignal2.getArrayOfReadPointers();
+
+        for (int smp = 0; smp < numSamples; ++smp)
+        {
+            for (int ch = 0; ch < modulationSignal.getNumChannels(); ++ch)
+            {
+                auto modul = mod[ch][smp];
+                auto buf = bufferData[ch][smp];
+
+                bufferData[ch][smp] = buf + modul;
+            }
+            
+        }
+
+        //modulationSignal.addFrom(0, 0, modulationSignal2, 0, numSamples, 1);
+        //modulationSignal.addFrom(1, 0, modulationSignal2, 1, numSamples, 1);
     }
+    
 
     // Scalare modulante
     timeAdapter.processBlock(modulationSignal, numSamples);
@@ -122,12 +137,14 @@ void DelayFXAudioProcessor::parameterChanged(const String& paramID, float newVal
     if (paramID == NAME_MOD)
         timeAdapter.setModAmount(newValue);
 
-    if (paramID == NAME_WF) {
+    if (paramID == NAME_WF) 
+    {
         LFO.setWaveform(newValue);
         LFO2.setWaveform(newValue);
     }
 
-    if (paramID == NAME_PH_DELTA) {
+    if (paramID == NAME_PH_DELTA) 
+    {
         LFO.setPhaseDelta(newValue);
         LFO2.setPhaseDelta(newValue);
     }
