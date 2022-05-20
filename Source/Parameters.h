@@ -40,7 +40,7 @@ namespace Parameters
 		std::vector<std::unique_ptr<RangedAudioParameter>> params;
 
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_DW, "Dry/Wet", 0.0f, 1.0f, DEFAULT_DW));
-		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FB, "Feedback", 0.0f, 1.0f, DEFAULT_FB));
+		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FB, "Feedback", 0.0f, 0.75f, DEFAULT_FB));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_DT, "Delay time (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME, 0.001f, 0.3f), DEFAULT_DT));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ, "LFO Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_PH_DELTA, "LFO channel phase delta", -1.0f, 1.0f, DEFAULT_PH_DELTA));

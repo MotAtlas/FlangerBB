@@ -10,9 +10,9 @@ public:
     Distorsion() {}; 
     ~Distorsion() {};
     float static getNextAudioSample(float sample) { 
-        return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * sample);
-        /*
-        * Implementazione del paper semplice
+        //return (2.f / MathConstants<float>::pi) * atan(DISTORTION_ALPHA * sample);
+        
+        // Implementazione del paper semplice
         auto a = 1 / 8;
         auto b = 1 / 18;
         if (sample > 1) {
@@ -24,7 +24,7 @@ public:
         else {
             return -1 - a + b;
         }
-        */
+        
     } 
 }; 
  
@@ -71,11 +71,11 @@ public:
     }
 
 protected: 
-    float a0 = 0.10810997327482257f;
-    float a1 = 0.21621994654964513f;
-    float a2 = 0.10810997327482257f;
-    float b1 = -1.3457492407577045f;
-    float b2 = 0.7781891338569948f;
+    float a0 = 0.09504617127393401f;
+    float a1 = 0.19009234254786803f;
+    float a2 = 0.09504617127393401f;
+    float b1 = -1.1831314813451321f;
+    float b2 = 0.5633161664408681f;
 
     /*
     float sr = 44100;
