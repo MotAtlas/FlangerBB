@@ -12,7 +12,7 @@
 #define GLIDE_TIME 0.01
 #define SMOOTHING_TIME 0.04
 
-#define DISTORTION_ALPHA 1.45f
+#define DISTORTION_ALPHA 0.9f
 #define BIQUAD_CUTOFF_FREQ 5000.0f
 #define BIQUAD_Q 5.0f
 
