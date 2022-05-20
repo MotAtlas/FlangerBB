@@ -50,9 +50,13 @@ private:
     //AnalogDelay delay;
     ModDelay delay;
     NaiveOscillator LFO;
+    NaiveOscillator LFO2;
     ParametrModulation timeAdapter;
 
+    bool lfo2On = true;
+
     AudioBuffer<float> modulationSignal;
+    AudioBuffer<float> modulationSignal2;
 
 
     //==============================================================================
