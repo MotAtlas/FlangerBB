@@ -44,7 +44,7 @@ public:
 
 			if (delta <= 0 && !((ch % 2) == 0)) 
 			{
-				channelPhaseOffset[ch] = delta;
+				channelPhaseOffset[ch] = -delta;
 			}
 		}
 	}
@@ -69,10 +69,12 @@ public:
 	{
 		auto sampleValue = 0.0f;
 		auto offsettedPhase = phase + delta;
-		offsettedPhase -= static_cast<int>(offsettedPhase);
+		/*
 		if (offsettedPhase < 0) {
-			offsettedPhase = 1 - offsettedPhase;
+			offsettedPhase = 1.0f - offsettedPhase;
 		}
+		*/
+		offsettedPhase -= static_cast<int>(offsettedPhase);
 
 		switch (waveform)
 		{
