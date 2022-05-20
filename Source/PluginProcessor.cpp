@@ -111,7 +111,7 @@ void DelayFXAudioProcessor::parameterChanged(const String& paramID, float newVal
         LFO.setWaveform(newValue);
 
     if (paramID == NAME_PH_DELTA)
-        auto i = 0;
+        LFO.setPhaseDelta(newValue);
 }
 
 //==============================================================================
