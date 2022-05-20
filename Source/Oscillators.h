@@ -32,6 +32,7 @@ public:
 
 	void setChannelPhaseDelta(float delta) 
 	{
+		/*
 		for (int ch = 0; ch < JucePlugin_MaxNumInputChannels; ch++)
 		{
 			if (delta >= 0 && ((ch % 2) == 0)) 
@@ -44,6 +45,9 @@ public:
 				channelPhaseOffset[ch] = delta;
 			}
 		}
+		*/
+		channelPhaseOffset[0] = delta;
+		channelPhaseOffset[1] = 0.0f;
 	}
 
 	void getNextAudioBlock(AudioBuffer<float>& buffer, const int numSamples)
@@ -67,6 +71,9 @@ public:
 		auto sampleValue = 0.0f;
 		auto offsettedPhase = phase + delta;
 		offsettedPhase -= static_cast<int>(offsettedPhase);
+		if (offsettedPhase < 0) {
+			offsettedPhase = 1 - offsettedPhase;
+		}
 
 		switch (waveform)
 		{
