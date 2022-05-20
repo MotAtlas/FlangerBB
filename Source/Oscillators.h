@@ -12,6 +12,7 @@ public:
 	{
 		samplePeriod = 1.0 / sr;
 		frequency.reset(sr, GLIDE_TIME);
+		phaseDelta.reset(sr, PH_SMOOTHING);
 	}
 
 	void setFrequency(float newValue)
@@ -24,6 +25,27 @@ public:
 		waveform = roundToInt(newValue);
 	}
 
+	void setPhaseDelta(float newValue)
+	{
+		phaseDelta.setTargetValue(newValue);
+	}
+
+	void setChannelPhaseDelta(float delta) 
+	{
+		for (int ch = 0; ch < JucePlugin_MaxNumInputChannels; ch++)
+		{
+			if (delta >= 0 && ((ch % 2) == 0)) 
+			{
+				channelPhaseOffset[ch] = delta;
+			}
+
+			if (delta <= 0 && !((ch % 2) == 0)) 
+			{
+				channelPhaseOffset[ch] = delta;
+			}
+		}
+	}
+
 	void getNextAudioBlock(AudioBuffer<float>& buffer, const int numSamples)
 	{
 		const int numCh = buffer.getNumChannels();
@@ -31,39 +53,43 @@ public:
 
 		for (int smp = 0; smp < numSamples; ++smp)
 		{
-			const auto sampleValue = getNextAudioSample();
-
-			for (int ch = 0; ch < numCh; ++ch)
-				bufferData[ch][smp] = sampleValue;
+			auto nextFrequency = frequency.getNextValue();
+			setChannelPhaseDelta(phaseDelta.getNextValue());
+			for (int ch = 0; ch < numCh; ++ch) 
+			{
+				bufferData[ch][smp] = getNextAudioSample(currentPhase[ch], nextFrequency, channelPhaseOffset[ch]);
+			}	
 		}
 	}
 
-	float getNextAudioSample()
+	float getNextAudioSample(float &phase, float nextFrequency, float delta = 0.0f)
 	{
 		auto sampleValue = 0.0f;
+		auto offsettedPhase = phase + delta;
+		offsettedPhase -= static_cast<int>(offsettedPhase);
 
 		switch (waveform)
 		{
 		case 0: // Sine
-			sampleValue = sin(MathConstants<float>::twoPi * currentPhase);
+			sampleValue = sin(MathConstants<float>::twoPi * offsettedPhase);
 			break;
 		case 1: // Triangular
-			sampleValue = 4.0f * abs(currentPhase - 0.5f) - 1.0f;
+			sampleValue = 4.0f * abs(offsettedPhase - 0.5f) - 1.0f;
 			break;
 		case 2: // Saw up
-			sampleValue = 2.0f * currentPhase - 1.0f;
+			sampleValue = 2.0f * offsettedPhase - 1.0f;
 			break;
 		case 3: // Saw down
-			sampleValue = -2.0f * currentPhase - 1.0f;
+			sampleValue = -2.0f * offsettedPhase - 1.0f;
 			break;
 		default:
 			break;
 		}
 
 		//phaseIncrement = frequency.isSmoothing() ? frequency.getNextValue() * samplePeriod : phaseIncrement;
-		phaseIncrement = frequency.getNextValue() * samplePeriod;
-		currentPhase += phaseIncrement;
-		currentPhase -= static_cast<int>(currentPhase);
+		phaseIncrement = nextFrequency * samplePeriod;
+		phase += phaseIncrement;
+		phase -= static_cast<int>(phase);
 
 		return sampleValue;
 	}
@@ -73,8 +99,10 @@ private:
 	int waveform = 0; // Un enum sarebbe stato meglio, ma per ora teniamo le cose semplici
 
 	double samplePeriod = 1.0;
-	float currentPhase = 0.0f;
+	float currentPhase[JucePlugin_MaxNumInputChannels] = {0.0f, 0.0f};
+	float channelPhaseOffset[JucePlugin_MaxNumInputChannels] = { 0.0f, 0.0f };
 	float phaseIncrement = 0.0f;
+	SmoothedValue<float, ValueSmoothingTypes::Linear> phaseDelta;
 	SmoothedValue<float, ValueSmoothingTypes::Multiplicative> frequency;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NaiveOscillator)

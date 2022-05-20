@@ -109,6 +109,9 @@ void DelayFXAudioProcessor::parameterChanged(const String& paramID, float newVal
 
     if (paramID == NAME_WF)
         LFO.setWaveform(newValue);
+
+    if (paramID == NAME_PH_DELTA)
+        auto i = 0;
 }
 
 //==============================================================================
