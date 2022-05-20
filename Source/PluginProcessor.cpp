@@ -11,6 +11,7 @@ DelayFXAudioProcessor::DelayFXAudioProcessor()
     parameters.addParameterListener(NAME_FREQ, this);
     parameters.addParameterListener(NAME_MOD, this);
     parameters.addParameterListener(NAME_WF, this);
+    parameters.addParameterListener(NAME_PH_DELTA, this);
 
     delay.setFeedback(DEFAULT_FB);
     //delay.setTime(DEFAULT_DT);
