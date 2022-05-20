@@ -32,7 +32,7 @@
 #define DEFAULT_FB 0.0f
 #define DEFAULT_FREQ 1.0f
 #define DEFAULT_PH_DELTA 0.0f
-#define DEFAULT_FREQ_LFO2 0.0f
+#define DEFAULT_FREQ_LFO2 1.0f
 #define DEFAULT_MOD 0.0f
 #define DEFAULT_WF 0
 
