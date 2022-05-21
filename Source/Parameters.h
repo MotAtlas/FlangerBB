@@ -1,40 +1,33 @@
 #pragma once
 #include <JuceHeader.h>
 
-// Useful constants
-#define MAX_DELAY_TIME 5.00f
-#define TIME_SMOOTHING 0.02f
-#define FBK_SMOOTHING  0.02f
-#define PH_SMOOTHING 0.02f
+constexpr float MAX_DELAY_TIME = 5.00f;
+constexpr float TIME_SMOOTHING = 0.02f;
+constexpr float FBK_SMOOTHING = 0.02f;
+constexpr float PH_SMOOTHING = 0.02f;
+constexpr float LEVEL_SMOOTHING_TIME = 0.02f;
+constexpr double GLIDE_TIME = 0.01;
+constexpr double SMOOTHING_TIME = 0.04;
+constexpr float DISTORTION_ALPHA = 0.9f;
 
-#define LEVEL_SMOOTHING_TIME 0.02f
+constexpr char* NAME_DW = "dw";
+constexpr char* NAME_DT = "dt";
+constexpr char* NAME_FB = "fb";
+constexpr char* NAME_FREQ = "lfoFreq";;
+constexpr char* NAME_PH_DELTA = "lfoPhaseDelta";
+constexpr char* NAME_FREQ_LFO2 = "lfo2Freq";
+constexpr char* NAME_MOD = "timeMod";
+constexpr char* NAME_WF = "waveform";
+constexpr char* NAME_LFO2_ON = "lfo2On";
 
-#define GLIDE_TIME 0.01
-#define SMOOTHING_TIME 0.04
-
-#define DISTORTION_ALPHA 0.9f
-#define BIQUAD_CUTOFF_FREQ 5000.0f
-#define BIQUAD_Q 5.0f
-
-// Actual parameters
-#define NAME_DW "dw"
-#define NAME_DT "dt"
-#define NAME_FB "fb"
-#define NAME_FREQ "lfoFreq"
-#define NAME_PH_DELTA "lfoPhaseDelta"
-#define NAME_FREQ_LFO2 "lfo2Freq"
-#define NAME_MOD "timeMod"
-#define NAME_WF "waveform"
-#define NAME_LFO2_ON "lfo2On"
-
-#define DEFAULT_DW 0.5f
-#define DEFAULT_DT 0.5f
-#define DEFAULT_FB 0.0f
-#define DEFAULT_FREQ 1.0f
-#define DEFAULT_PH_DELTA 0.0f
-#define DEFAULT_FREQ_LFO2 1.0f
-#define DEFAULT_MOD 0.0f
-#define DEFAULT_WF 0
+constexpr float DEFAULT_DW = 0.5f;
+constexpr float DEFAULT_DT = 0.1f;
+constexpr float DEFAULT_FB = 0.0f;
+constexpr float DEFAULT_FREQ = 0.1f;
+constexpr float DEFAULT_PH_DELTA = 0.0f;
+constexpr float DEFAULT_FREQ_LFO2 = 0.1f;
+constexpr float DEFAULT_MOD = 0.0f;
+constexpr int DEFAULT_WF = 0;
 
 namespace Parameters
 {
@@ -46,7 +39,7 @@ namespace Parameters
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FB, "Feedback", 0.0f, 0.75f, DEFAULT_FB));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_DT, "Delay time (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME, 0.001f, 0.3f), DEFAULT_DT));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ, "LFO Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ));
-		params.push_back(std::make_unique<AudioParameterFloat>(NAME_PH_DELTA, "LFO channel phase delta", 0.0f, 1.0f, DEFAULT_PH_DELTA));
+		params.push_back(std::make_unique<AudioParameterFloat>(NAME_PH_DELTA, "LFO channel phase delta", -1.0f, 1.0f, DEFAULT_PH_DELTA));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_MOD, "Mod amount (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME / 2.0f, 0.001f), DEFAULT_MOD));
 		params.push_back(std::make_unique<AudioParameterChoice>(NAME_WF, "LFO shape", StringArray{ "Sin", "Tri", "Saw up", "Saw down" }, DEFAULT_WF));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ_LFO2, "LFO2 Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ_LFO2));
