@@ -9,11 +9,13 @@ DelayFXAudioProcessor::DelayFXAudioProcessor()
     parameters.addParameterListener(NAME_DT, this);
     parameters.addParameterListener(NAME_FB, this);
     parameters.addParameterListener(NAME_FREQ, this);
-    parameters.addParameterListener(NAME_FREQ_LFO2, this);
-    parameters.addParameterListener(NAME_LFO2_ON, this);
     parameters.addParameterListener(NAME_MOD, this);
     parameters.addParameterListener(NAME_WF, this);
     parameters.addParameterListener(NAME_PH_DELTA, this);
+    parameters.addParameterListener(NAME_FREQ_LFO2, this);
+    parameters.addParameterListener(NAME_WF_LFO2, this);
+    parameters.addParameterListener(NAME_PH_DELTA_LFO2, this);
+    parameters.addParameterListener(NAME_LFO2_ON, this);
 
     delay.setFeedback(DEFAULT_FB);
     //delay.setTime(DEFAULT_DT);
@@ -24,8 +26,9 @@ DelayFXAudioProcessor::DelayFXAudioProcessor()
     LFO.setWaveform(DEFAULT_WF);
 
     //set LFO 2
-    LFO2.setFrequency(DEFAULT_FREQ_LFO2);
+    LFO2.setFrequency(DEFAULT_FREQ);
     LFO2.setWaveform(DEFAULT_WF);
+
     timeAdapter.setModAmount(DEFAULT_MOD);
     timeAdapter.setParameter(DEFAULT_DT);
 }
@@ -166,19 +169,19 @@ void DelayFXAudioProcessor::parameterChanged(const String& paramID, float newVal
         timeAdapter.setModAmount(newValue);
 
     if (paramID == NAME_WF) 
-    {
         LFO.setWaveform(newValue);
-        LFO2.setWaveform(newValue);
-    }
 
     if (paramID == NAME_PH_DELTA) 
-    {
         LFO.setPhaseDelta(newValue);
-        LFO2.setPhaseDelta(newValue);
-    }
 
     if (paramID == NAME_FREQ_LFO2)
         LFO2.setFrequency(newValue);
+
+    if (paramID == NAME_PH_DELTA_LFO2)
+        LFO2.setPhaseDelta(newValue);
+
+    if (paramID == NAME_WF_LFO2)
+        LFO2.setWaveform(newValue);
 
     if (paramID == NAME_LFO2_ON)
         lfo2On = newValue;

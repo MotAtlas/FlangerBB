@@ -15,9 +15,11 @@ constexpr char* NAME_DT = "dt";
 constexpr char* NAME_FB = "fb";
 constexpr char* NAME_FREQ = "lfoFreq";;
 constexpr char* NAME_PH_DELTA = "lfoPhaseDelta";
+constexpr char* NAME_PH_DELTA_LFO2 = "lfo2PhaseDelta";
 constexpr char* NAME_FREQ_LFO2 = "lfo2Freq";
 constexpr char* NAME_MOD = "timeMod";
 constexpr char* NAME_WF = "waveform";
+constexpr char* NAME_WF_LFO2 = "lfo2Waveform";
 constexpr char* NAME_LFO2_ON = "lfo2On";
 
 constexpr float DEFAULT_DW = 0.5f;
@@ -25,7 +27,6 @@ constexpr float DEFAULT_DT = 0.1f;
 constexpr float DEFAULT_FB = 0.0f;
 constexpr float DEFAULT_FREQ = 0.1f;
 constexpr float DEFAULT_PH_DELTA = 0.0f;
-constexpr float DEFAULT_FREQ_LFO2 = 0.1f;
 constexpr float DEFAULT_MOD = 0.0f;
 constexpr int DEFAULT_WF = 0;
 
@@ -40,10 +41,12 @@ namespace Parameters
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_DT, "Delay time (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME, 0.001f, 0.3f), DEFAULT_DT));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ, "LFO Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ));
 		params.push_back(std::make_unique<AudioParameterFloat>(NAME_PH_DELTA, "LFO channel phase delta", -1.0f, 1.0f, DEFAULT_PH_DELTA));
-		params.push_back(std::make_unique<AudioParameterFloat>(NAME_MOD, "Mod amount (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME / 2.0f, 0.001f), DEFAULT_MOD));
 		params.push_back(std::make_unique<AudioParameterChoice>(NAME_WF, "LFO shape", StringArray{ "Sin", "Tri", "Saw up", "Saw down" }, DEFAULT_WF));
-		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ_LFO2, "LFO2 Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ_LFO2));
+		params.push_back(std::make_unique<AudioParameterFloat>(NAME_FREQ_LFO2, "LFO2 Freq (Hz)", NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.3f), DEFAULT_FREQ));
+		params.push_back(std::make_unique<AudioParameterFloat>(NAME_PH_DELTA_LFO2, "LFO2 channel phase delta", -1.0f, 1.0f, DEFAULT_PH_DELTA));
+		params.push_back(std::make_unique<AudioParameterChoice>(NAME_WF_LFO2, "LFO2 shape", StringArray{ "Sin", "Tri", "Saw up", "Saw down" }, DEFAULT_WF));
 		params.push_back(std::make_unique<AudioParameterBool>(NAME_LFO2_ON, "LFO2 ON", 1));
+		params.push_back(std::make_unique<AudioParameterFloat>(NAME_MOD, "Mod amount (s)", NormalisableRange<float>(0.0f, MAX_DELAY_TIME / 2.0f, 0.001f), DEFAULT_MOD));
 
 		return {params.begin(), params.end()};
 	}
