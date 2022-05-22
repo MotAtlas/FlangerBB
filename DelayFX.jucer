@@ -8,6 +8,8 @@
     <GROUP id="{B842ABB1-FEC4-CDBE-356E-C8C9724B2289}" name="Source">
       <GROUP id="{3CCB81E0-DBB6-983E-2E5B-62744A4C3220}" name="GUI">
         <FILE id="Xf76g2" name="MyTheme.h" compile="0" resource="0" file="Source/MyTheme.h"/>
+        <FILE id="yOsUqk" name="PluginGUI.cpp" compile="1" resource="0" file="Source/PluginGUI.cpp"/>
+        <FILE id="Tv1PAZ" name="PluginGUI.h" compile="0" resource="0" file="Source/PluginGUI.h"/>
         <FILE id="DNxo9A" name="PluginEditor.cpp" compile="1" resource="0"
               file="Source/PluginEditor.cpp"/>
         <FILE id="KrXhgn" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
